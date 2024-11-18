@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Made By LOVE</title>
+    <style>
+      /* Reset & Font Import */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", Arial, sans-serif;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 10px;
+      }
+
+      .container {
+        max-width: 400px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #007bff;
+      }
+
+      label {
+        font-size: 0.9rem;
+        color: #555;
+        display: block;
+        margin-top: 10px;
+        text-align: left;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: #fff;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-top: 15px;
+      }
+
+      .btn:hover {
+        background: #0056b3;
+      }
+
+      .output {
+        margin-top: 20px;
+        text-align: left;
+        font-size: 0.9rem;
+        color: #333;
+        overflow-y: auto;
+        max-height: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+      }
+
+      .output p {
+        margin-bottom: 8px;
+        color: #007bff;
+        word-break: break-word;
+      }
+
+      footer {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Inbuilt CRod</h1>
+      <form action="/generate" method="POST">
+        <label for="bin">Enter BIN (6 digits):</label>
+        <input
+          type="text"
+          id="bin"
+          name="bin"
+          placeholder="e.g., 420767xxxxx"
+          required
+        />
+
+        <label for="secretKey">Enter PI Secret</label>
+        <input type="text" name="pics" required />
+
+        <label for="publicKey">Enter PK </label>
+        <input
+          type="text"
+          id="publicKey"
+          name="pk"
+          placeholder="e.g., pk_test_123456"
+          required
+        />
+
+        <button class="btn" type="submit">Generate</button>
+      </form>
+      <label for=" ">Result</label>
+      <div class="output" id="output">
+        <p>CC:{{ cc }} | {{ month }} | {{ year }} | {{ cvv }}</p>
+        <p class="result">{{ result }}</p>
+      </div>
+
+      <footer>
+        <p>
+          Created with 💙 by
+          <a href="#" target="_blank">RZRAWRR</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      function luhnCheck(ccNumber) {
+        let total = 0;
+        let reversed = ccNumber.split("").reverse();
+        for (let i = 0; i < reversed.length; i++) {
+          let num = parseInt(reversed[i]);
+          if (i % 2 === 1) {
+            num *= 2;
+            if (num > 9) num -= 9;
+          }
+          total += num;
+        }
+        return (10 - (total % 10)) % 10;
+      }
+
+      function generateCC() {
+        const bin = document.getElementById("bin").value;
+
+        const count = parseInt(document.getElementById("count").value);
+        const output = document.getElementById("output");
+        output.innerHTML = "";
+
+        // Validasi Input
+        if (bin.length < 6 || !/^\d+$/.test(bin)) {
+          output.innerHTML = '<p style="color:red;">Invalid BIN format</p>';
+          return;
+        }
+        if (!secretKey.startsWith("pi_") || secretKey.length < 10) {
+          output.innerHTML =
+            '<p style="color:red;">Invalid Secret Key format</p>';
+          return;
+        }
+        if (!publicKey.startsWith("pk_") || publicKey.length < 10) {
+          output.innerHTML =
+            '<p style="color:red;">Invalid Public Key format</p>';
+          return;
+        }
+
+        // Generate Credit Card Numbers
+        for (let i = 0; i < count; i++) {
+          let ccNumber = bin;
+          while (ccNumber.length < 15) {
+            ccNumber += Math.floor(Math.random() * 10);
+          }
+          ccNumber += luhnCheck(ccNumber);
+          output.innerHTML += `<p>${ccNumber}</p>`;
+        }
+
+        // Informasi Tambahan
+        output.innerHTML += `<p><strong>Secret Key:</strong> ${secretKey}</p>`;
+        output.innerHTML += `<p><strong>Public Key:</strong> ${publicKey}</p>`;
+      }
+    </script>
+  </body>
+</html>
