@@ -4,6 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Made By LOVE</title>
+    <script>
+      // Fungsi untuk meminta username dan password
+      function authenticate() {
+        const validUsername = "razor"; // Username yang valid
+        const validPassword = "razor@2024"; // Password yang valid
+
+        // Tampilkan prompt untuk username dan password
+        const username = prompt("Masukkan Username:");
+        const password = prompt("Masukkan Password:");
+
+        // Validasi username dan password
+        if (username === validUsername && password === validPassword) {
+          alert("Login berhasil! Selamat datang.");
+          document.body.style.visibility = "visible"; // Tampilkan halaman
+        } else {
+          alert("Login gagal! Silakan coba lagi.");
+          window.location.reload(); // Reload halaman jika gagal
+        }
+      }
+
+      // Jalankan autentikasi saat halaman dimuat
+      window.onload = authenticate;
+    </script>
     <style>
       /* Reset & Font Import */
       * {
@@ -21,6 +44,7 @@
         align-items: center;
         min-height: 100vh;
         padding: 10px;
+        visibility: hidden; /* Halaman disembunyikan sebelum login */
       }
 
       .container {
